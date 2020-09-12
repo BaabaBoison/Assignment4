@@ -1,30 +1,28 @@
 from flask import Flask,jsonify
-from flask_cors import CORS
 import requests
 app = Flask(__name__)
-CORS(app)
-base_url = "https://coronavirus-19-api.herokuapp.com"
-@app.route('/get-all-cases')
+url = 'http://localhost:5500'
+@app.route('/cases')
 def get_all_cases():
-    all_cases = requests.get(base_url + '/countries').json()
-    return jsonify(all_cases)
-@app.route('/get-cases-by-country/<country>')
+    cases = requests.get(url + '/countries').json()
+    return jsonify(cases)
+@app.route('/cases/<country>')
 def get_cases_by_country(country):
-    case = requests.get(base_url + '/countries/'+country).json()
-    return case
+    cases = requests.get(url + '/countries/' + country).json()
+    return jsonify(cases)
 @app.route('/<country>/active')
 def get_active_cases(country):
-    case = requests.get(base_url + '/countries/'+country).json()
-    return jsonify(case['active'])
+    cases = requests.get(url + '/countries/' + country).json()
+    return jsonify(cases['active'])
 @app.route('/<country>/cases')
-def get_cases(country):
-    case = requests.get(base_url + '/countries/'+country).json()
-    return jsonify(case['cases'])
+def get_total_cases(country):
+    cases = requests.get(url + '/countries/' + country).json()
+    return jsonify(cases['cases'])
+@app.route('/<country>/deaths')
+def get_death_cases(country):
+    cases = requests.get(url + '/countries/' + country).json()
+    return jsonify(cases['deaths'])
 @app.route('/<country>/recovered')
 def get_recovered_cases(country):
-    case = requests.get(base_url + '/countries/'+country).json()
-    return jsonify(case['recovered'])
-@app.route('/<country>/deaths')
-def get_deaths_cases(country):
-    case = requests.get(base_url + '/countries/'+country).json()
-    return jsonify(case['deaths'])
+    cases = requests.get(url + '/countries/' + country).json()
+    return jsonify(cases['recovered'])
